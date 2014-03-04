@@ -1,4 +1,4 @@
-trie_c--
+trie_cpp
 ========
 
 trie in c++ for storing large dictionaries
