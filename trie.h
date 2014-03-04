@@ -15,6 +15,12 @@ private:
 		std::map<char,Trie_Node> children;
 	public:
 		T  data;
+		bool is_end;
+		void lookup_child(char index, std::string data)
+		{
+			if(children.find(string[index]) != letter.end())
+				return lookup_child(children[letter],
+		}
 	};
 
 	Trie_Node* head_node;
