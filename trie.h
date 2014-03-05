@@ -9,6 +9,8 @@ template <class T>
 class Trie
 {
 private:
+
+	//node class
 	class Trie_Node
 	{
 	private:
@@ -16,12 +18,18 @@ private:
 	public:
 		T  data;
 		bool is_end;
+		//default constructor
 		Trie_Node(){}
+		//destructor
+		~Trie_Node(){clear_node();}
+		//check if empty
+		bool empty_node(){return children.empty();}
+
+		//lookup child
 		bool lookup_child(char index, std::string data)
 		{
 			//current letter
 			char cl = data[index];
-			//std::cout << "is_end?- "<<is_end<<" end of string" << index << "\n";
 
 			//if we're at the end, return
 			if(index == data.length())
@@ -48,7 +56,7 @@ private:
 				return children[cl]->lookup_child(index+1,data);
 			}
 		}
-		bool add_node(char index, std::string data)
+		bool insert_node(char index, std::string data)
 		{
 			//current letter
 			char cl = data[index];
@@ -78,11 +86,11 @@ private:
 					children[cl] = new Trie_Node;	
 				}
 				std::cout << "need to go deeper on- "<<cl<<"\n";
-				return children[cl]->add_node(index+1,data);
+				return children[cl]->insert_node(index+1,data);
 			}
 		}
 
-		bool delete_node(char index, std::string data)
+		bool erase_node(char index, std::string data)
 		{
 			//current letter
 			char cl = data[index];
@@ -109,7 +117,7 @@ private:
 					return false;
 	
 				std::cout << "need to go deeper on- "<<cl<<"\n";
-				if(children[cl]->delete_node(index+1,data))
+				if(children[cl]->erase_node(index+1,data))
 				{
 					std::cout << "deleteing on-  "<<cl<<"\n";
 					delete(children[cl]);
@@ -119,27 +127,56 @@ private:
 				return false;
 			}
 		}
+
+		bool clear_node()
+		{
+			for(int i = 0; i < children.size(); i++)
+			{
+				children[i]->clear_node();
+				delete children[i];
+			}
+		}
+
+		int size_node()
+		{
+			int counter = 0;
+			if(is_end) counter++;
+
+			typedef typename std::map<char,Trie<T>::Trie_Node*>::iterator it;
+			for(it iterator = children.begin(); iterator != children.end(); iterator++)
+				counter += iterator->second->size_node();
+			return counter;
+		}
 	};
 
 	Trie_Node* head_node;
 	
 public:
-	bool lookup(std::string data)
-		{return head_node->lookup_child(0,data);}
-	bool add_node(std::string data)
-		{return head_node->add_node(0,data);}
-	bool delete_node(std::string data)
-	{
-		//if(lookup(data))
-			return head_node->delete_node(0,data);
-		//else
-			//return false;
-	}
-
+	//default constructor
 	Trie()
-	{
-		head_node = new Trie_Node();
-	}
+	{head_node = new Trie_Node;}
+	//copy constructor	
+	Trie(Trie& other_trie)
+		{*head_node = *other_trie.head_node;}
+	//destructor
+	~Trie()	{}
+
+
+	//index overloader
+	bool operator [] (std::string data){return head_node->lookup_child(0,data);}
+	//insert a string
+	bool insert(std::string data){return head_node->insert_node(0,data);}
+	//erase a word
+	bool erase(std::string data){return head_node->erase_node(0,data);}
+	//delete the entire tree
+	void clear(){clear_node(0,head_node.clear_node());}
+	//check if the trie is empty
+	bool empty(){return head_node->empty_node();}
+	//count the number of words in the array
+	int size(){return head_node->size_node();}
+
+
+
 };
 
 #endif // __TRIE_H__

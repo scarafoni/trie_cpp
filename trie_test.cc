@@ -7,32 +7,25 @@ using namespace std;
 
 int main(void)
 {
-	Trie<string> starter;
-	string meat = "meat";
+	
+	Trie<string> trie;
+	cout << "empty?-"<< trie.empty() << "\n";
 	cout << "word- meat\n";
-	bool has_meat = starter.add_node(meat);
-	cout << has_meat << "\n";
-	has_meat = starter.lookup(meat);
-	cout << has_meat << "\n";
-
-	string meap = "meap";
-	cout << "word- meap\n";
-	bool has_meap = starter.add_node(meap);
-	cout << has_meap << "\n";
-	cout << "lookup after add\n";
-	has_meap = starter.lookup(meap);
-	cout << has_meap << "\n";
-	cout << "lookup after delete\n";
-	starter.delete_node(meap);
-	has_meap = starter.lookup(meap);
-	cout << has_meap << "\n";
-
+	trie.insert("meat");
+	cout << "empty?-"<< trie.empty() << "\n";
+	cout << "add meap\n";
+	trie.insert("meap");
+	cout << "add meape\n";
+	trie.insert("meape");
+	cout << "size (should be 3)- ";
+	cout << trie.size(); 
+	
 	/*
 	string dinner = "dinner";
 	cout << "word- dinner\n";
-	bool has_dinner = starter.lookup(dinner);
+	bool has_dinner = trie.lookup(dinner);
 	cout << has_dinner << "\n";
-	has_dinner = starter.lookup(dinner);
+	has_dinner = trie.lookup(dinner);
 	cout << has_dinner << "\n";
 	*/
 
