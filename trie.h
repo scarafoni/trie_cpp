@@ -98,17 +98,8 @@ private:
 			//if we're at the end, return
 			if(index == data.length())
 			{
-				if(is_end)
-				{
-					std::cout << "end, word found- "<<data<<"\n";
-					return true;
-				}
-				else
-				{
-					std::cout << "end, word not found - "<<data<<"\n";
-					is_end = true;
-					return false;
-				}
+				is_end = false;
+				return true;
 			}
 			//if the node below us is null, then it's not in the system
 			else
@@ -116,15 +107,11 @@ private:
 				if(children.find(cl) == children.end())
 					return false;
 	
-				std::cout << "need to go deeper on- "<<cl<<"\n";
-				if(children[cl]->erase_node(index+1,data))
-				{
-					std::cout << "deleteing on-  "<<cl<<"\n";
-					delete(children[cl]);
-					children.erase(cl);
-					return true;
-				}
-				return false;
+				//std::cout << "need to go deeper on- "<<cl<<"\n";
+				children[cl]->erase_node(index+1,data);
+				if(children[cl]->empty_node() && !children[cl]->is_end)
+					children[cl]->clear_node();
+				return true;
 			}
 		}
 
