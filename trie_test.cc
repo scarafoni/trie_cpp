@@ -20,24 +20,15 @@ int main(void)
 	int x = 0;
 	if(dictionary_file.is_open())
 	{
-		while(getline (dictionary_file,line))// && (x < 3))
-		{
-			//string line2 = removeSpaces(line);
-			trie.insert(line);
-
-			//cout << "line- "<< line <<"\n";
-			x++;
-		}
+		while(getline (dictionary_file,line))
+			cout << "attempte to insert "<<line<<"\n\t- "<< trie.insert(line)<<"\n";
 	}
 	
-	//size trie (should be same as before)
 	cout << "size of trie- " << trie.size() <<"\n";
-	//find "eatery"
-	//trie.insert("aa");
-	cout <<"\n\nword is here?- "<<trie["eatery"]<<"\n";
+	cout <<"\n\nword eatery is here?- "<<trie["eatery"]<<"\n";
 	trie.erase("eatery");
-	cout <<"\n\nword is here?- "<<trie["eatery"]<<"\n";
-	cout <<"\n\nsimilar word is here?- "<<trie["eat"]<<"\n";
+	cout <<"\n\nword eaterty is here after erasure?- "<<trie["eatery"]<<"\n";
+	cout <<"\n\nsimilar word (eat) is here?- "<<trie["eat"]<<"\n";
 
 	Trie<string> trie2(trie);
 	cout <<"\n\nsize after clear- "<<trie2.size()<<"\n";

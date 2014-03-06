@@ -67,7 +67,7 @@ private:
 				}
 				else
 				{
-					std::cout << "end, word inserted- "<<data<<"\n";
+					//std::cout << "end, word inserted- "<<data<<"\n";
 					is_end = true;
 					return false;
 				}
