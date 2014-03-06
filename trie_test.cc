@@ -1,35 +1,47 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include "trie.h"
 #include <map>
+#include <locale>
+#include <cctype>
+#include <functional>
+#include <algorithm>
 //this is bad practice I know, but It's here just for convenience
 using namespace std;
 
+string removeSpaces(string input);
+
 int main(void)
 {
-	
+	ifstream dictionary_file ("dictionary.txt");
+	string line;
 	Trie<string> trie;
-	cout << "empty?-"<< trie.empty() << "\n";
-	cout << "word- meat\n";
-	trie.insert("meat");
-	cout << "empty?-"<< trie.empty() << "\n";
-	cout << "add meap\n";
-	trie.insert("meap");
-	cout << "add meape\n";
-	trie.insert("meape");
-	cout << "size (should be 3)- "<< trie.size() << "\n"; 
-	trie.erase("meap");
-	cout << "size (should be 2)- "<< trie.size() << "\n"; 
-	cout << "finding meape (should be true)- " << trie["meap"] << "\n";
+	int x = 0;
+	if(dictionary_file.is_open())
+	{
+		while(getline (dictionary_file,line))// && (x < 3))
+		{
+			//string line2 = removeSpaces(line);
+			trie.insert(line);
+
+			//cout << "line- "<< line <<"\n";
+			x++;
+		}
+	}
 	
-	/*
-	string dinner = "dinner";
-	cout << "word- dinner\n";
-	bool has_dinner = trie.lookup(dinner);
-	cout << has_dinner << "\n";
-	has_dinner = trie.lookup(dinner);
-	cout << has_dinner << "\n";
-	*/
+	//size trie (should be same as before)
+	cout << "size of trie- " << trie.size() <<"\n";
+	//find "eatery"
+	//trie.insert("aa");
+	cout <<"\n\nword is here?- "<<trie["eatery"]<<"\n";
+	trie.erase("eatery");
+	cout <<"\n\nword is here?- "<<trie["eatery"]<<"\n";
+	cout <<"\n\nsimilar word is here?- "<<trie["eat"]<<"\n";
+
+	Trie<string> trie2(trie);
+	cout <<"\n\nsize after clear- "<<trie2.size()<<"\n";
+
 
 	cout << "testing over\n";
 	return 0;

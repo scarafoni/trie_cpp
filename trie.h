@@ -36,12 +36,10 @@ private:
 			{
 				if(is_end)
 				{
-					std::cout << "end, word found- "<<data<<"\n";
 					return true;
 				}
 				else
 				{
-					std::cout << "end, word not found - "<<data<<"\n";
 					is_end = true;
 					return false;
 				}
@@ -52,7 +50,6 @@ private:
 				if(children.find(cl) == children.end())
 					return false;
 	
-				std::cout << "need to go deeper on- "<<cl<<"\n";
 				return children[cl]->lookup_child(index+1,data);
 			}
 		}
@@ -60,19 +57,17 @@ private:
 		{
 			//current letter
 			char cl = data[index];
-			//std::cout << "is_end?- "<<is_end<<" end of string" << index << "\n";
 
 			//if we're at the end, return
-			if(index == data.length())
+			if(index == data.length()-1)
 			{
 				if(is_end)
 				{
-					std::cout << "end, word found- "<<data<<"\n";
 					return true;
 				}
 				else
 				{
-					std::cout << "end, word not found - "<<data<<"\n";
+					std::cout << "end, word inserted- "<<data<<"\n";
 					is_end = true;
 					return false;
 				}
@@ -82,10 +77,8 @@ private:
 			{
 				if(children.find(cl) == children.end())
 				{
-					std::cout << "made a baby on- "<<cl<<"\n";
 					children[cl] = new Trie_Node;	
 				}
-				std::cout << "need to go deeper on- "<<cl<<"\n";
 				return children[cl]->insert_node(index+1,data);
 			}
 		}
@@ -107,7 +100,6 @@ private:
 				if(children.find(cl) == children.end())
 					return false;
 	
-				//std::cout << "need to go deeper on- "<<cl<<"\n";
 				children[cl]->erase_node(index+1,data);
 				if(children[cl]->empty_node() && !children[cl]->is_end)
 					children[cl]->clear_node();
@@ -117,10 +109,12 @@ private:
 
 		bool clear_node()
 		{
-			for(int i = 0; i < children.size(); i++)
+			typedef typename std::map<char,Trie<T>::Trie_Node*>::iterator it;
+			for(it iterator = children.begin(); iterator != children.end(); iterator++)
 			{
-				children[i]->clear_node();
-				delete children[i];
+				iterator->second->clear_node();
+				delete iterator->second;
+				children.erase(iterator);
 			}
 		}
 
@@ -144,7 +138,7 @@ public:
 	{head_node = new Trie_Node;}
 	//copy constructor	
 	Trie(Trie& other_trie)
-		{*head_node = *other_trie.head_node;}
+		{head_node = other_trie.head_node;}
 	//destructor
 	~Trie()	{}
 
@@ -156,7 +150,7 @@ public:
 	//erase a word
 	bool erase(std::string data){return head_node->erase_node(0,data);}
 	//delete the entire tree
-	void clear(){clear_node(0,head_node.clear_node());}
+	void clear(){head_node->clear_node();}
 	//check if the trie is empty
 	bool empty(){return head_node->empty_node();}
 	//count the number of words in the array
