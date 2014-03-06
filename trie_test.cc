@@ -20,7 +20,7 @@ int main(void)
 	cout << "size (should be 3)- "<< trie.size() << "\n"; 
 	trie.erase("meap");
 	cout << "size (should be 2)- "<< trie.size() << "\n"; 
-	cout << "finding meape (should be true)" << trie["meap"] << "\n";
+	cout << "finding meape (should be true)- " << trie["meap"] << "\n";
 	
 	/*
 	string dinner = "dinner";
